@@ -22,20 +22,23 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            GradientBackground()
+            GradientBackground().ignoresSafeArea()
             VStack {
-                Button(action:
-                        { openWindow(id: "charts-screen")}) {
-                    Image(systemName: "chart.xyaxis.line").fontWeight(.light)
+                HStack {
+                    Text("Stan's: \(appVM.countOfStans)/\(appVM.numberOfStans)")
+                    Button(action:
+                            { openWindow(id: "charts-screen")}) {
+                        Image(systemName: "chart.xyaxis.line").fontWeight(.light)
+                    }.buttonStyle(.plain)
                 }
-                Text("Stan's: \(appVM.countOfStans)/\(appVM.numberOfStans)")
+                .padding(.bottom, 1)
                 if appVM.isBreakActive {
                     breakTimerView
                 } else {
                     stanTimerView
                 }
             }
-            //.foregroundColor(Color(red: 238/255, green: 238/255, blue: 238/255))
+            .fixedSize(horizontal: true, vertical: false)
             .padding()
         }
         .toolbarBackground(.thickMaterial)
@@ -111,9 +114,9 @@ extension View {
     }
 }
 
-/*
+
 #Preview {
     let container = try! ModelContainer(for: StanData.self)
     return ContentView(modelContext: container.mainContext)
 }
-*/
+

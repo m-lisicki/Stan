@@ -15,24 +15,24 @@ class StanViewModel: ObservableObject {
     @AppStorage("numberOfStans") private(set) var numberOfStans: Int = 4
     
     @AppStorage("stanDuration") private(set) var stanDuration: TimeInterval = 25 * 60
-    @AppStorage("shortBreakDuration") private var shortBreakDuration: TimeInterval = 5 * 60
-    @AppStorage("longBreakDuration") private var longBreakDuration: TimeInterval = 30 * 60
+    @AppStorage("shortBreakDuration") private(set) var shortBreakDuration: TimeInterval = 5 * 60
+    @AppStorage("longBreakDuration") private(set) var longBreakDuration: TimeInterval = 30 * 60
 
         
-    func startStan() {
+    @MainActor func startStan() {
         startTimer()
     }
     
-    func pauseStan() {
+    @MainActor func pauseStan() {
         stopTimer()
     }
     
-    func resetStan() {
+    @MainActor func resetStan() {
         resetTimer()
         countOfStans = 0
     }
     
-    func startBreak() {
+    @MainActor func startBreak() {
         if let existingStanData = fetchStanDataForToday() {
             updateStanCount(for: existingStanData)
         } else {
@@ -67,7 +67,7 @@ class StanViewModel: ObservableObject {
     @Published private(set) var isCounting = false
     private var timerCancellable: AnyCancellable?
     
-    func startTimer() {
+    @MainActor func startTimer() {
         guard !isCounting else { return }
         isCounting = true
         timerCancellable = Timer
@@ -79,14 +79,14 @@ class StanViewModel: ObservableObject {
         makeWindowFloat(true)
     }
     
-    func stopTimer() {
+    @MainActor func stopTimer() {
         isCounting = false
         timerCancellable?.cancel()
         timerCancellable = nil
         makeWindowFloat(false)
     }
     
-    func resetTimer() {
+    @MainActor func resetTimer() {
         stopTimer()
         clearElapsedTime()
     }
@@ -95,7 +95,7 @@ class StanViewModel: ObservableObject {
         timeElapsed = 0
     }
     
-    func makeWindowFloat(_ value: Bool) {
+    @MainActor func makeWindowFloat(_ value: Bool) {
         if let window = NSApplication.shared.windows.first {
             window.level = value ? .floating : .normal
         }
@@ -123,7 +123,7 @@ class StanViewModel: ObservableObject {
         do {
             let results = try context.fetch(descriptor)
             
-            guard results.count == 0 else {
+            guard results.count == 1 else {
                 throw DataError.countError
             }
             

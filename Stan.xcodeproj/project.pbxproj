@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D421F4F72D2BDBFE005FE4BB /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D421F4F52D2BDB77005FE4BB /* Metal.framework */; };
+		D413F8AD2D33F2D1005EDA4C /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D421F4F52D2BDB77005FE4BB /* Metal.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D421F4F72D2BDBFE005FE4BB /* Metal.framework in Frameworks */,
+				D413F8AD2D33F2D1005EDA4C /* Metal.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,7 +295,7 @@
 				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -326,7 +326,7 @@
 				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};

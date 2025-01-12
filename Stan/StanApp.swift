@@ -23,12 +23,18 @@ struct StanApp: App {
     var body: some Scene {
         Window("Stan", id: "main-screen") {
             ContentView(modelContext: container.mainContext)
-                .frame(minWidth: 170, minHeight: 130)
+                .frame(minWidth: 150, minHeight: 130)
         }
         .windowResizability(.contentSize)
         Window("Charts", id: "charts-screen") {
            ChartView()
                 .modelContext(container.mainContext)
+        }
+        .windowResizability(.contentSize)
+        Window("Data Management", id: "data-screen") {
+            StanDataView()
+                .modelContext(container.mainContext)
+                .frame(minWidth: 300)
         }
         .windowResizability(.contentSize)
         #if os(macOS)
