@@ -25,18 +25,25 @@ struct ContentView: View {
             GradientBackground().ignoresSafeArea()
             VStack {
                 HStack {
-                    Text("Stan's: \(appVM.countOfStans)/\(appVM.numberOfStans)")
+                    Text(appVM.isBreakActive ? "Break" : "Stan" + " \(appVM.countOfStans)/\(appVM.numberOfStans)")
                     Button(action:
                             { openWindow(id: "charts-screen")}) {
                         Image(systemName: "chart.xyaxis.line").fontWeight(.light)
-                    }.buttonStyle(.plain)
+                    }
                 }
                 .padding(.bottom, 1)
-                if appVM.isBreakActive {
-                    breakTimerView
-                } else {
-                    stanTimerView
+                .buttonStyle(.link)
+                HStack {
+                    Button("Skip") {
+                        appVM.skip()
+                    }
+                    Button("Reset") {
+                        appVM.resetStan()
+                    }
                 }
+                .buttonStyle(.link)
+                .padding(.bottom, 1)
+                timerView
             }
             .fixedSize(horizontal: true, vertical: false)
             .padding()
@@ -44,12 +51,16 @@ struct ContentView: View {
         .toolbarBackground(.thickMaterial)
     }
     
-    private var stanTimerView: some View {
+    private var timerView: some View {
         VStack {
-            Text(formattedTime(for: appVM.timeElapsed, threshold: appVM.stanDuration))
-                .timerStyle(timeElapsed: appVM.timeElapsed, isOn: timerTransition)
+            Text(formattedTime(for: appVM.timeElapsed, threshold: !appVM.isBreakActive ? appVM.stanDuration : appVM.breakThreshold()))
+                    .monospacedDigit()
+                    .fontDesign(.serif)
+                    .font(.largeTitle)
+                    .contentTransition(timerTransition ? .numericText(countsDown: true) : .identity)
+                    .animation(timerTransition ? .default : nil, value: appVM.timeElapsed)
             
-            if appVM.timeElapsed < appVM.stanDuration {
+            if !appVM.isBreakActive ? appVM.timeElapsed < appVM.stanDuration : appVM.timeElapsed < appVM.breakThreshold() {
                 HStack {
                     Button(appVM.isCounting ? "Pause" : "Start") {
                         if !appVM.isCounting {
@@ -59,36 +70,20 @@ struct ContentView: View {
                         }
                     }
                     .keyboardShortcut(.space, modifiers: [])
-                    Button("Reset") {
-                        appVM.resetStan()
-                    }
                 }
             } else {
                 HStack {
-                    Button("Start Break") {
-                        appVM.startBreak()
-                    }
-                    .keyboardShortcut(.space, modifiers: [])
-                }
-            }
-        }
-    }
-    
-    private var breakTimerView: some View {
-        VStack {
-            Text(formattedTime(for: appVM.timeElapsed, threshold: appVM.breakThreshold()))
-                .timerStyle(timeElapsed: appVM.timeElapsed, isOn: timerTransition)
-            HStack {
-                Button(appVM.isCounting ? "Pause" : "Start") {
-                    if !appVM.isCounting {
-                        appVM.startStan()
+                    if !appVM.isBreakActive {
+                        Button("Start Break") {
+                            appVM.startBreak()
+                        }
+                        .keyboardShortcut(.space, modifiers: [])
                     } else {
-                        appVM.pauseStan()
+                        Button("Start Stan") {
+                            appVM.endBreak()
+                        }
+                        .keyboardShortcut(.space, modifiers: [])
                     }
-                }
-                .keyboardShortcut(.space, modifiers: [])
-                Button("Start Stan") {
-                    appVM.endBreak()
                 }
             }
         }
@@ -101,16 +96,6 @@ struct ContentView: View {
     
     private func timeString(_ time: TimeInterval) -> String {
         String(format: "%02d:%02d", Int(time) / 60, Int(time) % 60)
-    }
-}
-
-extension View {
-    func timerStyle(timeElapsed: TimeInterval, isOn: Bool) -> some View {
-        return self
-            .fontDesign(.serif)
-            .font(.largeTitle)
-            .contentTransition(isOn ? .numericText(countsDown: true) : .identity)
-            .animation(isOn ? .default : nil, value: timeElapsed)
     }
 }
 

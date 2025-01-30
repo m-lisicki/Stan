@@ -21,6 +21,16 @@
         }
       }
     },
+    "%lld/%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld"
+          }
+        }
+      }
+    },
     "Add Default Entry" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -33,6 +43,9 @@
       }
     },
     "Add First Entry" : {
+
+    },
+    "Break" : {
 
     },
     "Charts" : {
@@ -175,6 +188,9 @@
         }
       }
     },
+    "Skip" : {
+
+    },
     "Stan" : {
       "localizations" : {
         "pl" : {
@@ -196,6 +212,7 @@
       }
     },
     "Stan's: %lld/%lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

@@ -9,30 +9,39 @@ import Combine
 import SwiftUI
 import SwiftData
 
-class StanViewModel: ObservableObject {
+final class StanViewModel: ObservableObject {
     @AppStorage("countOfStans") private(set) var countOfStans: Int = 0
     @AppStorage("isBreakActive") private(set) var isBreakActive: Bool = false
     @AppStorage("numberOfStans") private(set) var numberOfStans: Int = 4
-    
     @AppStorage("stanDuration") private(set) var stanDuration: TimeInterval = 25 * 60
     @AppStorage("shortBreakDuration") private(set) var shortBreakDuration: TimeInterval = 5 * 60
     @AppStorage("longBreakDuration") private(set) var longBreakDuration: TimeInterval = 30 * 60
 
         
-    @MainActor func startStan() {
+     func startStan() {
         startTimer()
     }
     
-    @MainActor func pauseStan() {
+    func pauseStan() {
         stopTimer()
     }
     
-    @MainActor func resetStan() {
+    func resetStan() {
         resetTimer()
+        isBreakActive = false
         countOfStans = 0
     }
     
-    @MainActor func startBreak() {
+    func skip() {
+        if isBreakActive {
+            endBreak()
+        } else {
+            resetTimer()
+            startBreak()
+        }
+    }
+    
+    func startBreak() {
         if let existingStanData = fetchStanDataForToday() {
             updateStanCount(for: existingStanData)
         } else {
@@ -43,9 +52,6 @@ class StanViewModel: ObservableObject {
         clearElapsedTime()
         isBreakActive = true
         
-        if !isCounting { //If user leaves the app we need to be sure that timer starts
-            startTimer()
-        }
     }
     
     func endBreak() {
@@ -60,6 +66,14 @@ class StanViewModel: ObservableObject {
         (countOfStans % numberOfStans) != 0 ? shortBreakDuration : longBreakDuration
     }
     
+    private func makeWindowFloat(_ shouldFloat: Bool) {
+        Task { @MainActor in
+            if let window = NSApplication.shared.windows.first {
+                window.level = shouldFloat ? .floating : .normal
+            }
+        }
+    }
+    
     
     //MARK: - Timer
     
@@ -67,7 +81,7 @@ class StanViewModel: ObservableObject {
     @Published private(set) var isCounting = false
     private var timerCancellable: AnyCancellable?
     
-    @MainActor func startTimer() {
+    func startTimer() {
         guard !isCounting else { return }
         isCounting = true
         timerCancellable = Timer
@@ -76,29 +90,25 @@ class StanViewModel: ObservableObject {
             .sink { [weak self] _ in
                 self?.timeElapsed += 1
             }
+        
         makeWindowFloat(true)
     }
     
-    @MainActor func stopTimer() {
+    func stopTimer() {
         isCounting = false
         timerCancellable?.cancel()
         timerCancellable = nil
+        
         makeWindowFloat(false)
     }
     
-    @MainActor func resetTimer() {
+    func resetTimer() {
         stopTimer()
         clearElapsedTime()
     }
     
     func clearElapsedTime() {
         timeElapsed = 0
-    }
-    
-    @MainActor func makeWindowFloat(_ value: Bool) {
-        if let window = NSApplication.shared.windows.first {
-            window.level = value ? .floating : .normal
-        }
     }
     
     private var context: ModelContext

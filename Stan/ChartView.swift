@@ -10,9 +10,14 @@ import Charts
 import SwiftUI
 
 struct ChartView: View {
-    //@Query(sort: \StanData.day) var stanData: [StanData]
-    @Environment(\.openWindow) private var openWindow
+#if DEBUG
     var stanData: [StanData] = []
+#else
+    @Query(sort: \StanData.day) var stanData: [StanData]
+#endif
+    
+    @Environment(\.openWindow) private var openWindow
+
     
     var body: some View {
         VStack {
@@ -39,6 +44,7 @@ struct ChartView: View {
             }
             .chartScrollableAxes(.horizontal)
             .chartXVisibleDomain(length: 3600*24*7)
+            .chartScrollTargetBehavior(.valueAligned(unit: 3600*24))
             .padding()
         }
         .frame(minWidth: 300, minHeight: 200)
@@ -56,6 +62,7 @@ struct ChartView: View {
     }
 }
 
+#if DEBUG
 func generateMockStanData() -> [StanData] {
     let calendar = Calendar.current
     let currentDate = Date()
@@ -70,7 +77,8 @@ func generateMockStanData() -> [StanData] {
 
 // Preview with mock data
 #Preview {
-    ChartView(stanData: generateMockStanData())
+    //ChartView(stanData: generateMockStanData())
 }
+#endif
 
 
