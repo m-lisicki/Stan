@@ -22,11 +22,11 @@ struct ChartView: View {
     var body: some View {
         VStack {
             Text("Session Count")
-                .font(.title)
+				.font(.title)
                 .fontDesign(.serif)
                 .padding(.bottom, 10)
-            //.foregroundColor(Color(red: 238/255, green: 238/255, blue: 238/255))
-            
+                //.foregroundColor(Color(red: 238/255, green: 238/255, blue: 238/255))
+
             Chart(stanData, id: \.day) { stan in
                 BarMark(
                     x: .value("Day", stan.day, unit: .day),
@@ -66,19 +66,18 @@ struct ChartView: View {
 func generateMockStanData() -> [StanData] {
     let calendar = Calendar.current
     let currentDate = Date()
-    
+
     // Generate mock data for the past 30 days
     return (0..<30).map { offset in
         let date = calendar.date(byAdding: .day, value: -offset, to: currentDate) ?? currentDate
-        let totalCountOfStans = Int.random(in: 10...100) // Random count between 10 and 100
+        let totalCountOfStans = Int.random(in: 10...100)
+        // Random count between 10 and 100
         return StanData(day: date, totalCountOfStans: totalCountOfStans)
     }
 }
 
 // Preview with mock data
 #Preview {
-    //ChartView(stanData: generateMockStanData())
+    ChartView(stanData: generateMockStanData())
 }
 #endif
-
-

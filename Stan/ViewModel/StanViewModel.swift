@@ -20,6 +20,7 @@ final class StanViewModel: ObservableObject {
         
      func startStan() {
         startTimer()
+        createStartData()
     }
     
     func pauseStan() {
@@ -146,18 +147,24 @@ final class StanViewModel: ObservableObject {
         return nil
     }
     
-    private func updateStanCount(for stanData: StanData) {
+    func createStartData() {
+        if let stanData = fetchStanDataForToday() {
+            stanData.detailedSessions.append(StanDataDetailed(stanStartDate: Date.now))
+        }
+    }
+    
+    func updateStanCount(for stanData: StanData) {
         stanData.totalCountOfStans += 1
         saveContext()
     }
     
-    private func saveNewStanData() {
+    func saveNewStanData() {
         let newStanData = StanData(day: .now, totalCountOfStans: 1)
         context.insert(newStanData)
         saveContext()
     }
     
-    private func saveContext() {
+    func saveContext() {
         do {
             try context.save()
         } catch {

@@ -25,13 +25,11 @@ class StanData: Identifiable {
 class StanDataDetailed {
     var stanStartDate: Date
     var stanEndDate: Date
-    var pauseStartDate: Date
-    var pauseEndDate: Date
+    var pauseStartDate: [Date] = []
+    var pauseEndDate: [Date] = []
     
-    init(stanStartDate: Date, stanEndDate: Date, pauseStartDate: Date, pauseEndDate: Date) {
+    init(stanStartDate: Date) {
         self.stanStartDate = stanStartDate
-        self.stanEndDate = stanEndDate
-        self.pauseStartDate = pauseStartDate
-        self.pauseEndDate = pauseEndDate
+        self.stanEndDate = stanStartDate //TODO: Think about how to implement it
     }
 }

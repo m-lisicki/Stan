@@ -53,7 +53,7 @@ struct ContentView: View {
     
     private var timerView: some View {
         VStack {
-            Text(formattedTime(for: appVM.timeElapsed, threshold: !appVM.isBreakActive ? appVM.stanDuration : appVM.breakThreshold()))
+            Text(ContentView.formattedTime(for: appVM.timeElapsed, threshold: !appVM.isBreakActive ? appVM.stanDuration : appVM.breakThreshold()))
                     .monospacedDigit()
                     .fontDesign(.serif)
                     .font(.largeTitle)
@@ -89,12 +89,12 @@ struct ContentView: View {
         }
     }
     
-    private func formattedTime(for currentTime: TimeInterval, threshold: TimeInterval) -> String {
+    static private func formattedTime(for currentTime: TimeInterval, threshold: TimeInterval) -> String {
         let difference = currentTime - threshold
         return difference < 0 ? timeString(-difference) : "+" + timeString(difference)
     }
     
-    private func timeString(_ time: TimeInterval) -> String {
+    static private func timeString(_ time: TimeInterval) -> String {
         String(format: "%02d:%02d", Int(time) / 60, Int(time) % 60)
     }
 }

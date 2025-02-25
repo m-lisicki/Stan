@@ -21,16 +21,6 @@
         }
       }
     },
-    "%lld/%lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld/%2$lld"
-          }
-        }
-      }
-    },
     "Add Default Entry" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -43,9 +33,6 @@
       }
     },
     "Add First Entry" : {
-
-    },
-    "Break" : {
 
     },
     "Charts" : {
