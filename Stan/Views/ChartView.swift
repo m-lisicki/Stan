@@ -71,7 +71,6 @@ func generateMockStanData() -> [StanData] {
     return (0..<30).map { offset in
         let date = calendar.date(byAdding: .day, value: -offset, to: currentDate) ?? currentDate
         let totalCountOfStans = Int.random(in: 10...100)
-        // Random count between 10 and 100
         return StanData(day: date, totalCountOfStans: totalCountOfStans)
     }
 }

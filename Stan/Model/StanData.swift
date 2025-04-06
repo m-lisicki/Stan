@@ -21,6 +21,7 @@ class StanData: Identifiable {
     }
 }
 
+    //TODO: Implement detailed data collection
 @Model
 class StanDataDetailed {
     var stanStartDate: Date
@@ -30,6 +31,6 @@ class StanDataDetailed {
     
     init(stanStartDate: Date) {
         self.stanStartDate = stanStartDate
-        self.stanEndDate = stanStartDate //TODO: Think about how to implement it
+        self.stanEndDate = stanStartDate
     }
 }
