@@ -15,4 +15,4 @@ As a dessert, a graphical view to track your progress over the past few days wit
 
 Application is currently available for macOS.
 
-In the future, I plan to add more detailed statistics with graphical visualizations and custom notifications featuring personally designed sound effects.
+In the **future**, I plan to add more detailed statistics with graphical visualizations and custom notifications featuring personally designed sound effects.
